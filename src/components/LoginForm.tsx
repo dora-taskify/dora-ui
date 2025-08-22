@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import InputField from "./ui/InputField"
+import InputField from "@/components/ui/InputField";
 import React, { useState } from "react";
-import axiosInstance from "../utils/axios";
-import SplashScreen from "./SplashScreen";
+import axiosInstance from "@/utils/axios";
+import SplashScreen from "@/components/SplashScreen";
 
 const LoginForm = () => {
     const [email, setEmail] = useState("");
@@ -30,7 +30,7 @@ const LoginForm = () => {
             
             console.log(res);
             setTimeout(() => {
-                navigate("/register");
+                navigate("/dashboard");
             }, 3000);
         } catch (error: any) {
             setErrorMessage(error.response?.data?.message || "Terjadi kesalahan!");

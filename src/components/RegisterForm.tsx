@@ -1,7 +1,7 @@
-import InputField from "./ui/InputField"
+import InputField from "@/components/ui/InputField"
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axiosInstance from "../utils/axios";
+import axiosInstance from "@/utils/axios";
 
 const RegisterForm = () => {
     const [username, setUsername] = useState("");
