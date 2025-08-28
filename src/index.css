@@ -1,49 +1,79 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-primary: var(--primary);
+  --color-primary-shade: var(--primary-shade);
+  --color-secondary: var(--secondary);
+  --color-secondary-shade: var(--secondary-shade);
+}
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --radius: 0.625rem;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* === Base Colors === */
+  --primary: oklch(59.229% 0.17924 327.146);
+  --primary-shade: oklch(65% 0.18 328);
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --secondary: oklch(60% 0.15 250);
+  --secondary-shade: oklch(75% 0.10 250);
+
+  --foreground: oklch(0% 0 0);
+  --background: oklch(1 0 0);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
+.dark {
+  --primary: oklch(59.7% 0.17 337); 
+  --primary-shade: oklch(70% 0.15 337);
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  --secondary: oklch(50% 0.15 250);
+  --secondary-shade: oklch(65% 0.12 250);
+
+  --foreground: oklch(0.985 0 0);
+  --background: oklch(0.145 0 0);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+@layer utilities {
+  .text-primary {
+    color: var(--primary);
   }
-  a:hover {
-    color: #747bff;
+
+  .text-white {
+    color: white;
+  }
+  
+  .text-primary-shade {
+    color: var(--primary-shade);
+  }
+
+  .text-secondary {
+    color: var(--secondary);
+  }
+  .text-secondary-shade {
+    color: var(--secondary-shade);
+  }
+
+  .bg-primary {
+    background-color: var(--primary);
+  }
+
+  .bg-primary-shade {
+    background-color: var(--primary-shade);
+  }
+
+  .bg-secondary {
+    background-color: var(--secondary);
+
+  }
+
+  .bg-secondary-shade {
+    background-color: var(--secondary-shade);
   }
 }

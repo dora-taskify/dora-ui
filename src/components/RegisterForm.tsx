@@ -1,4 +1,4 @@
-import InputField from "@/components/ui/InputField"
+import InputField from "@/components/myUi/InputField"
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axiosInstance from "@/utils/axios";
@@ -35,60 +35,62 @@ const RegisterForm = () => {
     }
 
     return (
-        <>
-            <h1 className="font-bold text-start mb-4 text-pink-900">Sign Up</h1>
-            {success && (
+        <div className="flex justify-center items-center h-screen">
+            <div className="w-full max-w-md px-6">
+                <h1 className="font-bold text-3xl text-start mb-4 text-primary">Sign Up</h1>
+                {success && (
 
-                <p className="mb-3 text-start text-green-600">
-                    Registrasi berhasil!
-                    <a 
-                        href="https://mail.google.com/" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="text-blue-500 ml-2 text-sm"
+                    <p className="mb-3 text-start text-green-600">
+                        Registrasi berhasil!
+                        <a 
+                            href="https://mail.google.com/" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="text-blue-500 ml-2 text-sm"
+                        >
+                            Buka Gmail
+                        </a>
+                    </p>
+                )}
+
+                {errorMessage && (
+                    <p className="mb-2 text-start text-red-500">{errorMessage}</p>
+                )}
+                <form onSubmit={onSubmit} className="flex flex-col gap-4 w-full max-w-md mx-auto">
+                    <div>
+                        <InputField label="Username" value={username} onChange={setUsername} placeholder="Enter your username..." type="text"/>
+                        {username && username.length < 6 && (
+                            <p className="text-red-500 text-sm font-medium text-start   ">
+                                Username harus lebih dari 6 huruf
+                            </p>
+                        )}
+                    </div>
+                    <InputField label="Email" value={email} onChange={setEmail} placeholder="Enter your email..." type="email"/>
+                    <div className="flex flex-col gap-1">
+                        <InputField label="Password" value={password} onChange={setPassword} placeholder="Enter your password..." type="password"/>
+                        {password && password.length < 6 && (
+                            <p className="text-red-500 text-sm font-medium text-start   ">
+                                Password harus lebih dari 6 huruf
+                            </p>
+                        )}
+                    </div>
+
+                    <button 
+                        type="submit" 
+                        disabled={!isFormValid}
+                        className={`flex justify-center font-bold text-white py-2 px-4 rounded-md transition-colors tracking-wide
+                        ${isFormValid ? "cursor-pointer bg-primary hover:bg-primary-shade transition" : "bg-gray-300 cursor-not-allowed"}`}
                     >
-                        Buka Gmail
-                    </a>
-                </p>
-            )}
-
-            {errorMessage && (
-                <p className="mb-2 text-start text-red-500">{errorMessage}</p>
-            )}
-            <form onSubmit={onSubmit} className="flex flex-col gap-4 w-full max-w-md mx-auto mb-6">
-                <div>
-                    <InputField label="Username" value={username} onChange={setUsername} placeholder="Enter your username..." type="text"/>
-                    {username && username.length < 6 && (
-                        <p className="text-red-500 text-sm font-medium text-start   ">
-                            Username harus lebih dari 6 huruf
-                        </p>
-                    )}
-                </div>
-                <InputField label="Email" value={email} onChange={setEmail} placeholder="Enter your email..." type="email"/>
-                <div className="flex flex-col gap-1">
-                    <InputField label="Password" value={password} onChange={setPassword} placeholder="Enter your password..." type="password"/>
-                    {password && password.length < 6 && (
-                        <p className="text-red-500 text-sm font-medium text-start   ">
-                            Password harus lebih dari 6 huruf
-                        </p>
-                    )}
-                </div>
-
-                <button 
-                    type="submit" 
-                    disabled={!isFormValid}
-                    className={`flex justify-center text-white font-bold py-2 px-4 rounded-md transition-colors tracking-wide
-                    ${isFormValid ? "cursor-pointer bg-pink-400 hover:bg-pink-600 transition" : "bg-gray-300 cursor-not-allowed"}`}
-                >
-                    {loading ? (
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    ) : (
-                        "Sign Up"
-                    )}
-                </button>
-            </form>
-            <p className="border-t pt-4">Already signed up? <Link to="/login" className="text-blue-400 underline">Go to login</Link></p>
-        </>
+                        {loading ? (
+                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                            "Sign Up"
+                        )}
+                    </button>
+                </form>
+                <p className="border-t pt-4 mt-6">Already signed up? <Link to="/login" className="text-blue-400 underline">Go to login</Link></p>
+            </div>
+        </div>
     )
 }
 
