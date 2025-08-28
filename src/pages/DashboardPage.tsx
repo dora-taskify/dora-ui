@@ -1,33 +1,68 @@
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import Dashboard from "@/components/ui/Board";
-import { Plus } from "lucide-react";
+import Dashboard from "@/components/myUi/Board";
+import DialogModal from "@/components/myUi/DialogModal";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import useBoard from "@/hooks/useBoard";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 const DashboardPage = () => {
-  const [open, setOpen] = useState(true);
+    const {name, setName, handleSubmit, boards, archieveBoard, updateBoard } = useBoard()
+    const [open, setOpen] = useState(true);
 
-  return (
-    <div className="flex h-screen w-full bg-white text-start">
-        <Sidebar open={open} setOpen={setOpen} />
+    return (
+        <div className="flex h-screen w-full bg-white text-start">
+            <Sidebar open={open} setOpen={setOpen} />
 
-        <div
-            className={`flex-1 flex flex-col gap-4 pt-6 transition-all duration-300 overflow-y-auto 
-            ${open ? "pl-70" : "pl-20"}`}
-        >
-            <div className="flex justify-between">
-                <p className="text-2xl font-medium">Dashboard</p>
-                <button
-                    className="cursor-pointer bg-purple-200 hover:bg-purple-300 px-4 rounded"
-                >
-                    <Plus width={16}/>
-                </button>
-            </div>
-            <div>
-                <Dashboard/>
+            <div
+                className={`flex-1 flex flex-col gap-4 pt-6 transition-all duration-300
+                ${open ? "pl-70" : "pl-20"}`}
+            >
+                <div className="flex gap-2 items-center justify-between">
+                    <p className="text-2xl font-medium">Dashboard</p>
+
+                    <DialogModal
+                        trigger={
+                            <Button
+                                className="cursor-pointer bg-purple-400 hover:bg-purple-300 hover:text-black"
+                            >
+                                Create
+                            </Button>
+                        }
+                        title="Add new board"
+
+                    >
+                        <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+                            <Input placeholder="Board Name" value={name} onChange={(e) => setName(e.target.value)} />
+                            <div className="flex justify-end gap-2 mt-4">
+                                <DialogClose asChild>
+                                    <Button variant="destructive" className="cursor-pointer">Cancel</Button>
+                                </DialogClose>
+                                <Button type="submit" className="cursor-pointer bg-purple-400 hover:bg-purple-300">
+                                    Create
+                                </Button>
+                            </div>
+                        </form>
+                    </DialogModal>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2">
+                    {boards.map((board) => ( !board.is_archieved && (
+                            <Dashboard
+                            key={board.id}
+                            id={board.id}
+                            title={board.name}
+                            mode="dashboard"
+                            onEdit={(id, name) => updateBoard(id, name)}
+                            onArchive={(id) => archieveBoard(Number(id))}
+                            />
+                        )
+                    ))}
+                </div>
             </div>
         </div>
-    </div>
-  );
+    );
 };
 
 export default DashboardPage;

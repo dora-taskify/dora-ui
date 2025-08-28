@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Menu, Home, CheckSquare, Calendar, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -8,18 +7,16 @@ type SidebarProps = {
 };
 
 const Sidebar = ({open, setOpen}: SidebarProps) => {
-    const [active, setActive] = useState("Home")
-
     const menus = [
         { id: "Dashboard", icon: <Home width={20} />, label: "Dashboard" },
-        { id: "Tasks", icon: <CheckSquare width={20} />, label: "Tasks" },
+        { id: "archieved-board", icon: <CheckSquare width={20} />, label: "Archieved" },
         { id: "Today", icon: <Calendar width={20} />, label: "Today" },
         { id: "Important", icon: <Star width={20} />, label: "Important" },
     ];
 
     return (
         <div
-        className={`fixed top-0 left-0 h-screen bg-zinc-50 transition-all duration-300 flex flex-col
+        className={`fixed top-0 left-0 h-screen bg-zinc-50 transition-all duration-300 flex flex-col py-5
             ${open ? "w-70" : "w-17 bg-white"}`}
         >
 
@@ -41,9 +38,9 @@ const Sidebar = ({open, setOpen}: SidebarProps) => {
                 )}
                 </div>
                 <Menu
-                className="cursor-pointer hover:bg-stone-100 rounded"
-                width={20}
-                onClick={() => setOpen(!open)}
+                    className="cursor-pointer hover:bg-stone-100 rounded"
+                    width={20}
+                    onClick={() => setOpen(!open)}
                 />
             </div>
 
@@ -52,14 +49,8 @@ const Sidebar = ({open, setOpen}: SidebarProps) => {
                     <Link
                         to={`/${menu.id.toLowerCase()}`}
                         key={menu.id}
-                        onClick={() => setActive(menu.id)}
-                        className={`cursor-pointer flex items-center w-full py-2 px-2 rounded transition-all
-                        ${open ? "gap-3 justify-start" : "justify-center"}
-                        ${
-                            active === menu.id
-                            ? "bg-purple-100 text-purple-600"
-                            : "hover:bg-zinc-200"
-                        }`}
+                        className={`cursor-pointer flex hover:bg-zinc-200 items-center w-full py-2 px-2 rounded transition-all
+                        ${open ? "gap-3 justify-start" : "justify-center"}`}
                     >
                         {menu.icon}
                         {open && <span className="text-sm">{menu.label}</span>}
