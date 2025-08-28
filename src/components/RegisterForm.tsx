@@ -1,4 +1,4 @@
-import InputField from "@/components/ui/InputField"
+import InputField from "@/components/myUi/InputField"
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axiosInstance from "@/utils/axios";

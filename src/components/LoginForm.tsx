@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import InputField from "@/components/ui/InputField";
+import InputField from "@/components/myUi/InputField";
 import React, { useState } from "react";
 import axiosInstance from "@/utils/axios";
 import SplashScreen from "@/components/SplashScreen";
