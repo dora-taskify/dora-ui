@@ -25,7 +25,7 @@ const DashboardPage = () => {
                     <DialogModal
                         trigger={
                             <Button
-                                className="cursor-pointer bg-purple-400 hover:bg-purple-300 hover:text-black"
+                                className="cursor-pointer bg-primary hover:bg-primary-shade text-white hover:text-black"
                             >
                                 Create
                             </Button>
@@ -37,9 +37,9 @@ const DashboardPage = () => {
                             <Input placeholder="Board Name" value={name} onChange={(e) => setName(e.target.value)} />
                             <div className="flex justify-end gap-2 mt-4">
                                 <DialogClose asChild>
-                                    <Button variant="destructive" className="cursor-pointer">Cancel</Button>
+                                    <Button className="cursor-pointer bg-secondary hover:bg-secondary-shade text-white">Cancel</Button>
                                 </DialogClose>
-                                <Button type="submit" className="cursor-pointer bg-purple-400 hover:bg-purple-300">
+                                <Button type="submit" className="cursor-pointer bg-primary hover:bg-primary-shade text-white">
                                     Create
                                 </Button>
                             </div>

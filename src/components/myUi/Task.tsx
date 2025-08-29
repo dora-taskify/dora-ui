@@ -1,27 +1,26 @@
-import { Check } from "lucide-react";
+import type React from "react";
 
-const Task = ({ label }: { label: string }) => {
-  return (
-    <label className="flex items-center gap-2 p-2 rounded cursor-pointer select-none">
-      {/* Native input tapi hidden secara visual */}
-      <input type="checkbox" className="peer hidden" />
+type TaskProps = {
+    id: number;
+    name: string;
+    description: string;
+    onDelete?: (id: number) => void;
+};
 
-      {/* Custom checkbox */}
-      <div
-        className="w-5 h-5 flex items-center justify-center rounded-full border border-gray-400 
-        peer-checked:bg-purple-500 peer-checked:border-purple-500 transition-colors"
-      >
-        <Check size={14} className="hidden peer-checked:block text-white" />
-      </div>
-
-      {/* Label */}
-      <span
-        className="text-sm peer-checked:line-through peer-checked:text-purple-400 transition-colors"
-      >
-        {label}
-      </span>
-    </label>
-  );
+const Task: React.FC<TaskProps> = ({ id, name,  onDelete, description }) => {
+    return (
+        <div
+            key={id}
+            className="bg-white rounded-xl border border-zinc-300 p-4 cursor-grab hover:shadow-sm"
+        >
+            <div className="mb-2">
+                <span className="p-2 font-semibold">{name}</span>
+            </div>
+            <div className="border-zinc-300 border rounded-md min-h-16">
+                <p className="text-stone-400 p-2 text-sm">{description}</p>
+            </div>
+        </div>
+    );
 };
 
 export default Task;

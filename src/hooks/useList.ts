@@ -9,7 +9,6 @@ const useList = (id: number) => {
     const fetchList = async () => {
         try {
             const res = await axiosInstance.get(`/api/v1/list/?board_id=${id}`)
-            
             setLists(res.data.data)
         } catch (error) {
             console.error("Failed to fetch boards:", error);

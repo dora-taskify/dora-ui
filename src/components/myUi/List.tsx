@@ -11,11 +11,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
+import useTask from "@/hooks/useTasks";
+import { useParams } from "react-router-dom";
 
 type ListProps = {
     id: number;
     name: string;
-    tasks?: string[]; // opsional: array task
     onEdit?: (id: number, name: string, description: string) => void;
     onArchive?: (id: number) => void;
     onDelete?: (id: number) => void;
@@ -25,15 +26,16 @@ type ListProps = {
 const ListBoard: React.FC<ListProps> = ({
     id,
     name,
-    tasks = [],
     onEdit,
     onArchive,
-    onAddTask,
 }) => {
+    const board_id = useParams()
+    const { handleCreateTask, taskName, setTaskName, setTaskDescription, taskDescription, tasks, handleDeleteTask } = useTask(Number(board_id.id), id)
     const [openDialog, setOpenDialog] = useState(false);
     const [editName, setEditName] = useState("");
     const [editDescription, setEditDescription] = useState("");
-    
+    const [showInput, setShowInput] = useState(false)
+
     return (
         <div className="flex flex-col gap-2 w-64">
             {/* Header List */}
@@ -49,21 +51,65 @@ const ListBoard: React.FC<ListProps> = ({
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-
-            <div className="bg-white rounded-xl border border-zinc-300 p-4 flex flex-col gap-2">
                 {tasks.length > 0 ? (
-                    tasks.map((task, index) => <Task key={index} label={task} />)
+                    tasks.map((task) => (
+                    <Task
+                        key={task.id}
+                        id={task.id}
+                        name={task.name}
+                        description={task.description}
+                        onDelete={(id) => handleDeleteTask(id)}
+                    />
+                    ))
                 ) : (
-                    <p className="text-gray-400 text-sm">No tasks yet</p>
+                    <div className="border rounded-lg border-zinc-300 h-14 flex items-center justify-center">
+                        <p className="text-gray-400 text-md text-center">No tasks yet</p>
+                    </div>
                 )}
+            <div>
+                {showInput ? (
+                    <div className="bg-white rounded-xl border border-zinc-300 p-4">
+                        <form 
+                            onSubmit={handleCreateTask}
+                            className="flex flex-col gap-2"
+                        >
 
+                            <Input
+                                type="text"
+                                value={taskName}
+                                onChange={(e) => setTaskName(e.target.value)}
+                                placeholder="your task here..."
+                            />
+                            <Textarea
+                                value={taskDescription}
+                                onChange={(e) => setTaskDescription(e.target.value)}
+                                placeholder="description task..."
+                            />
+                            <div className="flex gap-2 justify-end mt-2">
+                                <button
+                                    onClick={() => setShowInput(false)}
+                                    className="bg-secondary rounded-lg px-2 py-1 text-white cursor-pointer hover:bg-secondary-shade"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="bg-primary rounded-lg px-2 py-1 text-white cursor-pointer hover:bg-primary-shade"
+                                >
+                                    Create
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                ) : (
+                    <button
+                        onClick={() => setShowInput(true)}
+                        className="mt-2 text-sm text-primary hover:underline cursor-pointer"
+                    >
+                        + Add Task
+                    </button>
+                )}
             </div>
-            <button
-                onClick={() => onAddTask?.(id)}
-                className="mt-2 text-sm text-purple-500 hover:underline text-left"
-            >
-                + Add Task
-            </button>
 
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                 <DialogContent className="sm:max-w-md">
