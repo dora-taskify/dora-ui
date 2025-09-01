@@ -1,4 +1,5 @@
 import Task from "@/components/myUi/Task";
+import { Droppable, Draggable } from "@hello-pangea/dnd";
 import React, { useState } from "react";
 import {
     DropdownMenu,
@@ -29,8 +30,8 @@ const ListBoard: React.FC<ListProps> = ({
     onEdit,
     onArchive,
 }) => {
-    const board_id = useParams()
-    const { handleCreateTask, taskName, setTaskName, setTaskDescription, taskDescription, tasks, handleDeleteTask } = useTask(Number(board_id.id), id)
+    const {id: boardId} = useParams()
+    const { handleCreateTask, taskName, setTaskName, setTaskDescription, taskDescription, tasks, handleDeleteTask, handleUpdateTask } = useTask(Number(boardId), id)
     const [openDialog, setOpenDialog] = useState(false);
     const [editName, setEditName] = useState("");
     const [editDescription, setEditDescription] = useState("");
@@ -51,21 +52,42 @@ const ListBoard: React.FC<ListProps> = ({
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-                {tasks.length > 0 ? (
-                    tasks.map((task) => (
-                    <Task
-                        key={task.id}
-                        id={task.id}
-                        name={task.name}
-                        description={task.description}
-                        onDelete={(id) => handleDeleteTask(id)}
-                    />
+            <Droppable droppableId={String(id)} type="TASK">
+                {(provided) => (
+                <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className="flex flex-col gap-2 min-h-[50px] rounded-lg p-2"
+                >
+                    {tasks.length > 0 ? (
+                    tasks.map((task, index) => (
+                        <Draggable key={task.id} draggableId={String(task.id)} index={index}>
+                        {(provided) => (
+                            <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            >
+                            <Task
+                                id={task.id}
+                                name={task.name}
+                                description={task.description}
+                                onUpdate={({ id, name, description }) => handleUpdateTask(id, name, description)}
+                                onDelete={(id) => handleDeleteTask(id)}
+                            />
+                            </div>
+                        )}
+                        </Draggable>
                     ))
-                ) : (
+                    ) : (
                     <div className="border rounded-lg border-zinc-300 h-14 flex items-center justify-center">
                         <p className="text-gray-400 text-md text-center">No tasks yet</p>
                     </div>
+                    )}
+                    {provided.placeholder}
+                </div>
                 )}
+            </Droppable>
             <div>
                 {showInput ? (
                     <div className="bg-white rounded-xl border border-zinc-300 p-4">
@@ -73,7 +95,6 @@ const ListBoard: React.FC<ListProps> = ({
                             onSubmit={handleCreateTask}
                             className="flex flex-col gap-2"
                         >
-
                             <Input
                                 type="text"
                                 value={taskName}
@@ -104,7 +125,7 @@ const ListBoard: React.FC<ListProps> = ({
                 ) : (
                     <button
                         onClick={() => setShowInput(true)}
-                        className="mt-2 text-sm text-primary hover:underline cursor-pointer"
+                        className="mt-2 flex ml-4 text-sm text-primary hover:underline cursor-pointer"
                     >
                         + Add Task
                     </button>
@@ -117,9 +138,7 @@ const ListBoard: React.FC<ListProps> = ({
                         <DialogTitle>Edit List</DialogTitle>
                     </DialogHeader>
                     <div className="flex flex-col gap-3">
-                        <form className="flex flex-col gap-3" onSubmit={(e) => {
-                                        e.preventDefault()
-                                        onEdit?.(Number(id), editName, editDescription)}}>
+                        <form className="flex flex-col gap-3" onSubmit={(e) => { e.preventDefault(); onEdit?.(Number(id), editName, editDescription)}}>
                             <Input
                                 value={editName}
                                 onChange={(e) => setEditName(e.target.value)}

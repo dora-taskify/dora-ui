@@ -31,7 +31,6 @@ const DashboardPage = () => {
                             </Button>
                         }
                         title="Add new board"
-
                     >
                         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                             <Input placeholder="Board Name" value={name} onChange={(e) => setName(e.target.value)} />

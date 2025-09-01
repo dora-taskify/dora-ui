@@ -1,4 +1,5 @@
 import Sidebar from "@/components/Sidebar";
+import { DragDropContext } from "@hello-pangea/dnd";
 import { useState } from "react";
 import List from "@/components/myUi/List";
 import useList from "@/hooks/useList";
@@ -9,38 +10,41 @@ import { Textarea } from "@/components/ui/textarea";
 
 const TaskPage = () => {
   const { id } = useParams();
-  const { lists, name, setName, handleCreateList, description, setDescription, archieveList, updateList } = useList(Number(id));
+  const { lists, name, setName, handleCreateList, description, setDescription, archieveList, updateList, handleDragTask } = useList(Number(id));
   const [open, setOpen] = useState(true);
   const [showInput, setShowInput] = useState(false);
 
   return (
     <div className="flex h-screen w-full bg-white text-start">
       <Sidebar open={open} setOpen={setOpen} />
-
         <div
           className={`flex-1 flex flex-col gap-4 pt-6 transition-all duration-300 overflow-y-auto ${
             open ? "pl-70" : "pl-20"
           }`}
         >
-          <div className="flex gap-4 items-start flex-nowrap pb-4 h-full px-8">
-            {lists.map((list) => (
-              !list.is_archieved && (
-                <div key={list.id} className="flex-shrink-0 w-64">
-                  <List
-                    name={list.name}
-                    onEdit={(id, name, description) => updateList(id, name, description)}
-                    id={list.id}
-                    onArchive={(id) => archieveList(Number(id))}
-                  />
+          <div className="flex gap-4 items-start flex-nowrap pb-4 h-full">
+            <DragDropContext onDragEnd={handleDragTask}>
+                <div className="flex gap-4 items-start flex-nowrap pb-4 h-full px-6">
+                  {lists.map((list) => (
+                    !list.is_archieved && (
+                      <div key={list.id} className="flex-shrink-0 w-64">
+                        <List
+                          name={list.name}
+                          onEdit={(id, name, description) => updateList(id, name, description)}
+                          id={list.id}
+                          onArchive={(id) => archieveList(Number(id))}
+                        />
+                      </div>
+                    )
+                  ))}
                 </div>
-              )
-            ))}
+            </DragDropContext>
 
             {/* Add List */}
-            <div className="w-64">
+            <div>
               {showInput ? (
                 <form onSubmit={handleCreateList}>
-                  <div className="bg-white rounded-xl border border-zinc-300 p-4 flex flex-col gap-2 mt-9 w-64">
+                  <div className="bg-white rounded-xl flex flex-col gap-2 mt-12 w-64">
                     <div className="flex flex-col gap-2">
                       <Input
                         placeholder="List Name"
@@ -71,7 +75,7 @@ const TaskPage = () => {
                 </form>
               ) : (
                 <Button
-                  className="cursor-pointer hover:bg-primary-shade w-full h-14 mt-9 rounded-lg w-64 bg-white border border-zinc-300"
+                  className="cursor-pointer hover:bg-secondary-shade w-full h-14 mt-11 rounded-lg w-64 bg-white border border-zinc-300"
                   onClick={() => setShowInput(true)}
                 >
                   + Add List

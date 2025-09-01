@@ -29,6 +29,7 @@ const LoginForm = () => {
         } catch (error: any) {
             setErrorMessage(error.response?.data?.message || "Terjadi kesalahan!");
         } finally {
+            setShowSplash(false);
             setLoading(false)
         }
     }
