@@ -1,4 +1,4 @@
-import { Menu, Home, CheckSquare, Calendar, Star } from "lucide-react";
+import { Menu, Home, ArchiveRestore, Calendar, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
 type SidebarProps = {
@@ -9,7 +9,7 @@ type SidebarProps = {
 const Sidebar = ({open, setOpen}: SidebarProps) => {
     const menus = [
         { id: "Dashboard", icon: <Home width={20} />, label: "Dashboard" },
-        { id: "archieved-board", icon: <CheckSquare width={20} />, label: "Archieved" },
+        { id: "archieved-board", icon: <ArchiveRestore width={20} />, label: "Archieved" },
         { id: "Today", icon: <Calendar width={20} />, label: "Today" },
         { id: "Important", icon: <Star width={20} />, label: "Important" },
     ];

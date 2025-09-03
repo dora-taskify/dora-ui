@@ -32,7 +32,8 @@ const Board: React.FC<BoardProps> = ({
     
     return (
         <div
-            onClick={goToDetail}
+            key={id}
+            onClick={mode === "dashboard" ? goToDetail : undefined}
             className="cursor-pointer bg-white rounded-xl border border-zinc-300 overflow-hidden mb-10 hover:shadow-sm"
         >
             <div className="h-22 w-full overflow-hidden bg-zinc-200">
@@ -55,9 +56,9 @@ const Board: React.FC<BoardProps> = ({
                                         <Input placeholder="Board Name" value={name} onChange={(e) => setName(e.target.value)}/>
                                         <div className="flex justify-end gap-2 mt-4">
                                             <DialogClose asChild>
-                                                <Button variant="destructive" className="cursor-pointer">Cancel</Button>
+                                                <Button className="text-white cursor-pointer bg-secondary hover:bg-secondary-shade">Cancel</Button>
                                             </DialogClose>
-                                            <Button type="submit" className="cursor-pointer bg-purple-400 hover:bg-purple-300">
+                                            <Button type="submit" className="text-white cursor-pointer bg-primary hover:bg-primary-shade">
                                                 Update
                                             </Button>
                                         </div>
@@ -84,9 +85,9 @@ const Board: React.FC<BoardProps> = ({
                                 >
                                     <div className="flex justify-end gap-2 mt-4">
                                         <DialogClose asChild>
-                                            <Button className="cursor-pointer">Nope</Button>
+                                            <Button className="cursor-pointer text-white bg-primary hover:bg-primary-shade">Nope</Button>
                                         </DialogClose>
-                                        <Button type="submit" onClick={() => {onDelete?.(Number(id))}} variant="destructive" className="cursor-pointer">
+                                        <Button type="submit" onClick={() => {onDelete?.(Number(id))}} className="cursor-pointer bg-secondary text-white hover:bg-secondary-shade">
                                             Sure
                                         </Button>
                                     </div>

@@ -12,7 +12,7 @@ const DashboardPage = () => {
     const [open, setOpen] = useState(true);
 
     return (
-        <div className="flex h-screen w-full bg-white text-start">
+        <div className="flex h-screen w-full bg-white text-start px-8">
             <Sidebar open={open} setOpen={setOpen} />
 
             <div
@@ -25,21 +25,20 @@ const DashboardPage = () => {
                     <DialogModal
                         trigger={
                             <Button
-                                className="cursor-pointer bg-purple-400 hover:bg-purple-300 hover:text-black"
+                                className="cursor-pointer bg-primary hover:bg-primary-shade text-white hover:text-black"
                             >
                                 Create
                             </Button>
                         }
                         title="Add new board"
-
                     >
-                        <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+                        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                             <Input placeholder="Board Name" value={name} onChange={(e) => setName(e.target.value)} />
                             <div className="flex justify-end gap-2 mt-4">
                                 <DialogClose asChild>
-                                    <Button variant="destructive" className="cursor-pointer">Cancel</Button>
+                                    <Button className="cursor-pointer bg-secondary hover:bg-secondary-shade text-white">Cancel</Button>
                                 </DialogClose>
-                                <Button type="submit" className="cursor-pointer bg-purple-400 hover:bg-purple-300">
+                                <Button type="submit" className="cursor-pointer bg-primary hover:bg-primary-shade text-white">
                                     Create
                                 </Button>
                             </div>
@@ -47,7 +46,7 @@ const DashboardPage = () => {
                     </DialogModal>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-4">
                     {boards.map((board) => ( !board.is_archieved && (
                             <Dashboard
                             key={board.id}

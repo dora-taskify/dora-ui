@@ -8,7 +8,7 @@ const ArchievedPage = () => {
     const [open, setOpen] = useState(true);
 
     return (
-        <div className="flex h-screen w-full bg-white text-start">
+        <div className="flex h-screen w-full bg-white text-start px-8">
             <Sidebar open={open} setOpen={setOpen} />
 
             <div
@@ -16,7 +16,7 @@ const ArchievedPage = () => {
                 ${open ? "pl-70" : "pl-20"}`}
             >
 
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-4">
                     {boards.map((board) => ( board.is_archieved && (
                             <Dashboard
                             key={board.id}
