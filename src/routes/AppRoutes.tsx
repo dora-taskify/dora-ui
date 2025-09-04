@@ -7,6 +7,7 @@ import { isMobileDevice } from "@/utils/detectDevice"
 import DashboardMobile from "@/pages/DashboardMobile"
 import TaskPage from "@/pages/TaskPage"
 import ArchievedPage from "@/pages/ArchievedPage"
+import HomePage from "@/pages/HomePage"
 
 const AppRoutes = () => {
     const [isMobile, setIsMobile] = useState(false)
@@ -23,6 +24,7 @@ const AppRoutes = () => {
                 <Route path="/board/:id" element={isMobile ? <DashboardMobile/> : <TaskPage/>} />
                 <Route path="/register" element={<RegisterPage/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/" element={<HomePage/>}/>
             </Routes>
         </BrowserRouter>
     )
