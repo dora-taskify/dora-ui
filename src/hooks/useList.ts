@@ -11,7 +11,6 @@ const useList = (id: number) => {
         try {
             const res = await axiosInstance.get(`/api/v1/board/${id}`)
             setLists(res.data.data.list)
-            
         } catch (error) {
             console.error("Failed to fetch boards:", error);
         }
@@ -72,7 +71,7 @@ const useList = (id: number) => {
                 newPosition: destination.index + 1,
             });
             
-            console.log("Sukses");
+
         } catch (err) {
             console.error("Gagal update posisi task:", err);
         }

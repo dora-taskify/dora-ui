@@ -22,6 +22,7 @@ const TaskPage = () => {
             open ? "pl-70" : "pl-20"
           }`}
         >
+
           <div className="flex items-start flex-nowrap pb-4 h-full">
             <DragDropContext onDragEnd={handleDragTask}>
                 <div className="flex gap-4 items-start flex-nowrap pb-4 h-full px-6">
@@ -44,6 +45,7 @@ const TaskPage = () => {
             {/* Add List */}
             <div>
               {showInput ? (
+
                 <form onSubmit={(e) => {
                   handleCreateList(e);
                   setShowInput(false)
@@ -81,6 +83,7 @@ const TaskPage = () => {
               ) : (
                 <Button
                   className="cursor-pointer hover:bg-secondary-shade w-full h-14 mt-16 rounded-lg w-64 bg-white border border-zinc-300"
+
                   onClick={() => setShowInput(true)}
                 >
                   + Add List

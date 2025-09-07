@@ -28,7 +28,6 @@ const useTask = (board_id: number, list_id: number) => {
     const fetchTask = async () => {
         try {
             const res = await axiosInstance.get(`/api/v1/task/${board_id}/${list_id}`)
-            
             setTasks(res.data.data)
         } catch (error) {
             console.error("Failed to fetch boards:", error);
@@ -70,6 +69,7 @@ const useTask = (board_id: number, list_id: number) => {
     }, [board_id, list_id])
 
     return { taskName, setTaskName, taskDescription, setTaskDescription, handleCreateTask, tasks, handleDeleteTask, setTasks, fetchTask, handleUpdateTask, priority, setPriority, deadline, setDeadline }
+
 }
 
 export default useTask

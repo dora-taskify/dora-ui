@@ -8,6 +8,7 @@ import Item from "@/components/myUi/Item";
 import useItem from "@/hooks/useItem";
 import { useParams } from "react-router-dom";
 
+
 type TaskProps = {
     id: number;
     name: string;
@@ -53,7 +54,7 @@ const Task: React.FC<TaskProps> = ({ id, listId, name, description, priority, de
             year: "numeric",
         });
     };
-
+            
     return (
         <DialogModal
             trigger={
@@ -96,6 +97,7 @@ const Task: React.FC<TaskProps> = ({ id, listId, name, description, priority, de
                             onChange={(e) => setNewName(e.target.value)}
                             className="border-zinc-300"
                         />
+
                         <label className="text-sm font-medium text-zinc-700 px-1">Priority</label>
                             <select
                                 value={newPriority}
@@ -107,6 +109,7 @@ const Task: React.FC<TaskProps> = ({ id, listId, name, description, priority, de
                                 <option value="HIGH">High</option>
                                 <option value="CRITICAL">Critical</option>
                         </select>
+
                         <div className="flex gap-2">
                             <Button type="submit" className="text-white bg-primary hover:bg-primary-shade cursor-pointer">Submit</Button>
                             <Button type="button" onClick={() => setShowInputTitle(false)} className="bg-secondary cursor-pointer text-white hover:bg-secondary-shade">
@@ -117,12 +120,14 @@ const Task: React.FC<TaskProps> = ({ id, listId, name, description, priority, de
                 ) : (
                     <div className="flex justify-between">
                         <div onClick={() => setShowInputTitle(true)} className="cursor-pointer mb-6 hover:bg-zinc-100 rounded-sm">
+
                             <p className="font-medium text-2xl px-2">{name}</p>
                             <span
                                 className={`text-xs font-semibold px-4 py-1 rounded-full ${getPriorityStyle(priority)}`}
                             >
                                 {priority}
                             </span>
+
                         </div>
                         <div className="relative">
                             <Trash width={20} color="red" className="hover:bg-zinc-100 rounded-sm cursor-pointer" onClick={() => setShowDelete(true)}/>
@@ -158,6 +163,7 @@ const Task: React.FC<TaskProps> = ({ id, listId, name, description, priority, de
                             e.preventDefault()
                             onUpdate?.({ id, name: newName, description: newDescription, priority: newPriority })
                             setShowInputDescription(false)
+
                         }}
                     >
                         <Input
@@ -186,6 +192,7 @@ const Task: React.FC<TaskProps> = ({ id, listId, name, description, priority, de
                     <div onClick={() => setShowInputDescription(true)} className="mb-6 hover:bg-zinc-100 rounded-lg cursor-pointer">
                         <p className="font-medium px-2">Description</p>
                         <p className="px-2">{description}</p>
+
                     </div>
                 )}
 
@@ -230,6 +237,7 @@ const Task: React.FC<TaskProps> = ({ id, listId, name, description, priority, de
                             </Button>
                         )}
                     </div>
+
                 </div>
             </div>
         </DialogModal>

@@ -173,6 +173,7 @@ const ListBoard: React.FC<ListProps> = ({
                             >
                                 Create
                             </button>
+
                             </div>
                         </form>
                     </div>

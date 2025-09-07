@@ -1,6 +1,7 @@
 import { isMobileDevice } from "@/utils/detectDevice";
 import { Menu, Home, ArchiveRestore, Calendar, Star } from "lucide-react";
 import { useEffect, useState } from "react";
+
 import { Link } from "react-router-dom";
 
 type SidebarProps = {

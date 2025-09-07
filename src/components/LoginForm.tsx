@@ -20,11 +20,13 @@ const LoginForm = () => {
         setShowSplash(true);
         setErrorMessage("")
         try {
-            const res = await axiosInstance.post("/api/v1/login", {
+            await axiosInstance.post("/api/v1/login", {
                 email,
                 password
             })
+
             localStorage.setItem("email", res.data.data.email);
+
             navigate("/dashboard");
         } catch (error: any) {
             setErrorMessage(error.response?.data?.message || "Terjadi kesalahan!");
