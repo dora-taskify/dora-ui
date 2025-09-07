@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Dashboard from "@/components/myUi/Board";
-import useCreateBoard from "@/hooks/useBoard";
+import useBoard from "@/hooks/useBoard";
 
 const ArchievedPage = () => {
-    const {boards, deleteBoard, archieveBoard } = useCreateBoard()
+    const {boards, deleteBoard, archieveBoard } = useBoard()
     const [open, setOpen] = useState(true);
 
     return (
@@ -19,12 +19,12 @@ const ArchievedPage = () => {
                 <div className="grid grid-cols-3 gap-4">
                     {boards.map((board) => ( board.is_archieved && (
                             <Dashboard
-                            key={board.id}
-                            id={board.id}
-                            title={board.name}
-                            mode="archived"
-                            onArchive={(id) => archieveBoard(Number(id))}
-                            onDelete={(id) => deleteBoard(Number(id))}
+                                key={board.id}
+                                id={board.id}
+                                title={board.name}
+                                mode="archived"
+                                onArchive={(id) => archieveBoard(Number(id))}
+                                onDelete={(id) => deleteBoard(Number(id))}
                             />
                         )
                     ))}

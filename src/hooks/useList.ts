@@ -25,7 +25,6 @@ const useList = (id: number) => {
                 name,
                 description
             })
-            console.log("success");
             await fetchList()
         } catch (error) {
             console.log("reject");
@@ -34,7 +33,7 @@ const useList = (id: number) => {
 
     const updateList = async (listId: number, name: string, description: string) => {
         try {
-            await axiosInstance.put(`/task/${id}/${listId}/${id}`, {
+            await axiosInstance.put(`api/v1/list/${id}/${listId}/`, {
                 name,
                 description
             })
@@ -58,10 +57,6 @@ const useList = (id: number) => {
     const handleDragTask = async (result: DropResult) => {
         const { source, destination, draggableId } = result;
 
-        console.log(`ini source: ${source.droppableId}`);
-        console.log(`ini destination ${destination?.droppableId}`);
-        console.log(`ini draggabale id ${draggableId}`);
-
         if (!destination) return;
 
         if (
@@ -73,12 +68,10 @@ const useList = (id: number) => {
             await axiosInstance.patch(
                 `/api/v1/task/move/${id}/${source.droppableId}/${draggableId}`, {
                 destinationListId: Number(destination.droppableId),
-                newPosition: destination.index,
+                newPosition: destination.index + 1,
             });
-             
-        
-            console.log("Sukses");
-            window.location.reload();
+            
+
         } catch (err) {
             console.error("Gagal update posisi task:", err);
         }

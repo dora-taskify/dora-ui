@@ -24,7 +24,9 @@ const LoginForm = () => {
                 email,
                 password
             })
-            
+
+            localStorage.setItem("email", res.data.data.email);
+
             navigate("/dashboard");
         } catch (error: any) {
             setErrorMessage(error.response?.data?.message || "Terjadi kesalahan!");

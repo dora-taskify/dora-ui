@@ -1,4 +1,7 @@
+import { isMobileDevice } from "@/utils/detectDevice";
 import { Menu, Home, ArchiveRestore, Calendar, Star } from "lucide-react";
+import { useEffect, useState } from "react";
+
 import { Link } from "react-router-dom";
 
 type SidebarProps = {
@@ -13,6 +16,13 @@ const Sidebar = ({open, setOpen}: SidebarProps) => {
         { id: "Today", icon: <Calendar width={20} />, label: "Today" },
         { id: "Important", icon: <Star width={20} />, label: "Important" },
     ];
+
+    const [isMobile, setIsMobile] = useState(false)
+
+
+    useEffect(() => {
+        setIsMobile(isMobileDevice())
+    }, []);
 
     return (
         <div
@@ -33,15 +43,17 @@ const Sidebar = ({open, setOpen}: SidebarProps) => {
                             alt="profile"
                             className="w-6 rounded-full object-cover"
                         />
-                        <h2 className="font-medium">Fadli</h2>
+                        <h2 className="font-medium text-sm truncate">{localStorage.getItem("email")}</h2>
                     </div>
                 )}
                 </div>
-                <Menu
-                    className="cursor-pointer hover:bg-stone-100 rounded"
-                    width={20}
-                    onClick={() => setOpen(!open)}
-                />
+                {!isMobile && (
+                    <Menu
+                        className="cursor-pointer hover:bg-stone-100 rounded"
+                        width={20}
+                        onClick={() => setOpen(!open)}
+                    />
+                )}
             </div>
 
             <nav className="flex flex-col px-4">

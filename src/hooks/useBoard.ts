@@ -8,6 +8,7 @@ const useBoard = () => {
     const fetchBoards = async () => {
         try {
             const res = await axiosInstance.get("/api/v1/board")
+            
             setBoards(res.data.data)
         } catch (error) {
             console.error("Failed to fetch boards:", error);

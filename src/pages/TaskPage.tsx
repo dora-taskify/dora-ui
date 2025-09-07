@@ -22,7 +22,8 @@ const TaskPage = () => {
             open ? "pl-70" : "pl-20"
           }`}
         >
-          <div className="flex gap-4 items-start flex-nowrap pb-4 h-full">
+
+          <div className="flex items-start flex-nowrap pb-4 h-full">
             <DragDropContext onDragEnd={handleDragTask}>
                 <div className="flex gap-4 items-start flex-nowrap pb-4 h-full px-6">
                   {lists.map((list) => (
@@ -30,6 +31,7 @@ const TaskPage = () => {
                       <div key={list.id} className="flex-shrink-0 w-64">
                         <List
                           name={list.name}
+                          description={list.description}
                           onEdit={(id, name, description) => updateList(id, name, description)}
                           id={list.id}
                           onArchive={(id) => archieveList(Number(id))}
@@ -43,8 +45,13 @@ const TaskPage = () => {
             {/* Add List */}
             <div>
               {showInput ? (
-                <form onSubmit={handleCreateList}>
-                  <div className="bg-white rounded-xl flex flex-col gap-2 mt-12 w-64">
+
+                <form onSubmit={(e) => {
+                  handleCreateList(e);
+                  setShowInput(false)
+                }
+                  }>
+                  <div className="bg-white rounded-xl flex flex-col gap-2 mt-12 w-65">
                     <div className="flex flex-col gap-2">
                       <Input
                         placeholder="List Name"
@@ -75,7 +82,8 @@ const TaskPage = () => {
                 </form>
               ) : (
                 <Button
-                  className="cursor-pointer hover:bg-secondary-shade w-full h-14 mt-11 rounded-lg w-64 bg-white border border-zinc-300"
+                  className="cursor-pointer hover:bg-secondary-shade w-full h-14 mt-16 rounded-lg w-64 bg-white border border-zinc-300"
+
                   onClick={() => setShowInput(true)}
                 >
                   + Add List

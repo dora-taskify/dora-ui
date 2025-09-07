@@ -18,6 +18,7 @@ import { useParams } from "react-router-dom";
 type ListProps = {
     id: number;
     name: string;
+    description: string;
     onEdit?: (id: number, name: string, description: string) => void;
     onArchive?: (id: number) => void;
     onDelete?: (id: number) => void;
@@ -27,11 +28,12 @@ type ListProps = {
 const ListBoard: React.FC<ListProps> = ({
     id,
     name,
+    description,
     onEdit,
     onArchive,
 }) => {
     const {id: boardId} = useParams()
-    const { handleCreateTask, taskName, setTaskName, setTaskDescription, taskDescription, tasks, handleDeleteTask, handleUpdateTask } = useTask(Number(boardId), id)
+    const { handleCreateTask, taskName, setTaskName, setTaskDescription, taskDescription, tasks, handleDeleteTask, handleUpdateTask, priority, setPriority, deadline, setDeadline } = useTask(Number(boardId), id)
     const [openDialog, setOpenDialog] = useState(false);
     const [editName, setEditName] = useState("");
     const [editDescription, setEditDescription] = useState("");
@@ -41,13 +43,20 @@ const ListBoard: React.FC<ListProps> = ({
         <div className="flex flex-col gap-2 w-64">
             {/* Header List */}
             <div className="flex justify-between items-center px-2">
-                <p className="font-bold text-lg">{name}</p>
+                <div className="items-center max-w-[200px]">
+                    <p className="font-bold text-lg">{name}</p>
+                    <p className="truncate text-sm">{description}</p>
+                </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <MoreHorizontal className="cursor-pointer hover:text-gray-500" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-36">
-                        <DropdownMenuItem onClick={() => setOpenDialog(true)}>Edit</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => {
+                            setOpenDialog(true)
+                            setEditName(name); 
+                            setEditDescription(description ?? "")
+                        }}>Edit</DropdownMenuItem>
                         <DropdownMenuItem onClick={(e) => {e.stopPropagation(); onArchive?.(Number(id));}}>Archive</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -70,9 +79,12 @@ const ListBoard: React.FC<ListProps> = ({
                             >
                             <Task
                                 id={task.id}
+                                listId={id}
                                 name={task.name}
+                                priority={task.priority}
+                                deadline={task.deadline}
                                 description={task.description}
-                                onUpdate={({ id, name, description }) => handleUpdateTask(id, name, description)}
+                                onUpdate={({ id, name, description, priority }) => handleUpdateTask(id, name, description, priority)}
                                 onDelete={(id) => handleDeleteTask(id)}
                             />
                             </div>
@@ -91,34 +103,77 @@ const ListBoard: React.FC<ListProps> = ({
             <div>
                 {showInput ? (
                     <div className="bg-white rounded-xl border border-zinc-300 p-4">
-                        <form 
-                            onSubmit={handleCreateTask}
-                            className="flex flex-col gap-2"
+                       <form
+                            onSubmit={(e) => {
+                            handleCreateTask(e);
+                            setShowInput(false);
+                            }}
+                            className="flex flex-col gap-4"
                         >
-                            <Input
-                                type="text"
-                                value={taskName}
-                                onChange={(e) => setTaskName(e.target.value)}
-                                placeholder="your task here..."
-                            />
-                            <Textarea
-                                value={taskDescription}
-                                onChange={(e) => setTaskDescription(e.target.value)}
-                                placeholder="description task..."
-                            />
-                            <div className="flex gap-2 justify-end mt-2">
-                                <button
-                                    onClick={() => setShowInput(false)}
-                                    className="bg-secondary rounded-lg px-2 py-1 text-white cursor-pointer hover:bg-secondary-shade"
+                            {/* Task Name */}
+                            <div className="flex flex-col gap-1">
+                                <label className="text-sm font-medium text-zinc-700 px-1">Task Name</label>
+                                <Input
+                                    type="text"
+                                    value={taskName}
+                                    onChange={(e) => setTaskName(e.target.value)}
+                                    placeholder="Your task here..."
+                                    required
+                                />
+                            </div>
+
+                            {/* Description */}
+                            <div className="flex flex-col gap-1">
+                                <label className="text-sm font-medium text-zinc-700 px-1">Description</label>
+                                <Textarea
+                                    value={taskDescription}
+                                    onChange={(e) => setTaskDescription(e.target.value)}
+                                    placeholder="Description task..."
+                                    required
+                                />
+                            </div>
+
+                            {/* Priority */}
+                            <div className="flex flex-col gap-1">
+                                <label className="text-sm font-medium text-zinc-700 px-1">Priority</label>
+                                <select
+                                    value={priority}
+                                    onChange={(e) => setPriority(e.target.value)}
+                                    className="border rounded-lg px-3 py-2 text-sm text-zinc-700 focus:ring-2 focus:ring-primary focus:outline-none"
                                 >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="bg-primary rounded-lg px-2 py-1 text-white cursor-pointer hover:bg-primary-shade"
-                                >
-                                    Create
-                                </button>
+                                    <option value="LOW">Low</option>
+                                    <option value="MEDIUM">Medium</option>
+                                    <option value="HIGH">High</option>
+                                    <option value="CRITICAL">Critical</option>
+                                </select>
+                            </div>
+
+                            {/* Deadline */}
+                            <div className="flex flex-col gap-1">
+                                <label className="text-sm font-medium text-zinc-700 px-1">Deadline</label>
+                                <Input 
+                                    type="date"
+                                    value={deadline ? deadline.toISOString().split("T")[0] : ""}
+                                    onChange={(e) => setDeadline(new Date(e.target.value))}
+                                    min={new Date().toISOString().split("T")[0]}
+                                />
+                            </div>
+
+                            <div className="flex justify-end gap-2 mt-4">
+                            <button
+                                type="button"
+                                onClick={() => setShowInput(false)}
+                                className="bg-secondary rounded-lg px-4 py-2 text-white cursor-pointer hover:bg-secondary-shade transition"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                className="bg-primary rounded-lg px-4 py-2 text-white cursor-pointer hover:bg-primary-shade transition"
+                            >
+                                Create
+                            </button>
+
                             </div>
                         </form>
                     </div>
@@ -153,7 +208,7 @@ const ListBoard: React.FC<ListProps> = ({
                                 <Button variant="outline" onClick={() => setOpenDialog(false)}>
                                     Cancel
                                 </Button>
-                                <Button>Save</Button>
+                                <Button className="text-white bg-primary">Save</Button>
                             </div>
                         </form>
                     </div>
