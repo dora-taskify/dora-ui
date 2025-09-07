@@ -69,7 +69,7 @@ const useList = (id: number) => {
             await axiosInstance.patch(
                 `/api/v1/task/move/${id}/${source.droppableId}/${draggableId}`, {
                 destinationListId: Number(destination.droppableId),
-                newPosition: destination.index,
+                newPosition: destination.index + 1,
             });
             
             console.log("Sukses");

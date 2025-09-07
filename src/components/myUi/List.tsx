@@ -155,6 +155,7 @@ const ListBoard: React.FC<ListProps> = ({
                                     type="date"
                                     value={deadline ? deadline.toISOString().split("T")[0] : ""}
                                     onChange={(e) => setDeadline(new Date(e.target.value))}
+                                    min={new Date().toISOString().split("T")[0]}
                                 />
                             </div>
 

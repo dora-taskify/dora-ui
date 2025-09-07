@@ -5,7 +5,6 @@ const useTask = (board_id: number, list_id: number) => {
     const [tasks, setTasks] = useState<any[]>([])
     const [taskName, setTaskName] = useState("")
     const [taskDescription, setTaskDescription] = useState("")
-    const [position, setPosition] = useState("")
     const [priority, setPriority] = useState("LOW");
     const [deadline, setDeadline] = useState<Date | null>(null)
 
@@ -20,7 +19,6 @@ const useTask = (board_id: number, list_id: number) => {
             })
             setTaskName("")
             setTaskDescription("")
-            setPosition("")
             fetchTask()
         } catch (error) {
             console.log("reject");
@@ -71,7 +69,7 @@ const useTask = (board_id: number, list_id: number) => {
         fetchTask()
     }, [board_id, list_id])
 
-    return { taskName, setTaskName, taskDescription, setTaskDescription, handleCreateTask, position, setPosition, tasks, handleDeleteTask, setTasks, fetchTask, handleUpdateTask, priority, setPriority, deadline, setDeadline }
+    return { taskName, setTaskName, taskDescription, setTaskDescription, handleCreateTask, tasks, handleDeleteTask, setTasks, fetchTask, handleUpdateTask, priority, setPriority, deadline, setDeadline }
 }
 
 export default useTask
