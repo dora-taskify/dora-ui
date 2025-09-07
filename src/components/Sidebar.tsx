@@ -17,7 +17,8 @@ const Sidebar = ({open, setOpen}: SidebarProps) => {
     ];
 
     const [isMobile, setIsMobile] = useState(false)
-    
+
+
     useEffect(() => {
         setIsMobile(isMobileDevice())
     }, []);
@@ -41,7 +42,7 @@ const Sidebar = ({open, setOpen}: SidebarProps) => {
                             alt="profile"
                             className="w-6 rounded-full object-cover"
                         />
-                        <h2 className="font-medium">Fadli</h2>
+                        <h2 className="font-medium text-sm truncate">{localStorage.getItem("email")}</h2>
                     </div>
                 )}
                 </div>

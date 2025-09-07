@@ -1,24 +1,20 @@
-import { useState } from "react";
-import Sidebar from "@/components/Sidebar";
 import Dashboard from "@/components/myUi/Board";
 import DialogModal from "@/components/myUi/DialogModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useBoard from "@/hooks/useBoard";
 import { DialogClose } from "@radix-ui/react-dialog";
+import HamburgerMenu from "@/components/myUi/HamburgerMenu";
 
 const DashboardMobile = () => {
     const { name, setName, handleSubmit, boards, archieveBoard, updateBoard } = useBoard();
-    const [open, setOpen] = useState(false);
 
     return (
         <div className="flex h-screen w-full bg-white text-start">
-        <Sidebar open={open} setOpen={setOpen} />
+            <HamburgerMenu />
 
-        <div
-            className="flex-1 flex flex-col gap-4 pt-6 transition-all duration-300 px-4 ml-15 overflow-auto"
-        >
-            <div className="flex gap-2 items-center justify-between min-w-[280px]">
+            <div className="flex-1 flex flex-col gap-4 pt-6 mt-10 transition-all duration-300 px-4 overflow-auto">
+                <div className="flex gap-2 items-center justify-between min-w-[280px]">
                 <p className="text-2xl font-medium">Dashboard</p>
 
                 <DialogModal
@@ -48,26 +44,26 @@ const DashboardMobile = () => {
                         Create
                         </Button>
                     </div>
-                </form>
+                    </form>
                 </DialogModal>
-            </div>
+                </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {boards.map(
-                (board) =>
-                !board.is_archieved && (
-                    <Dashboard
-                    key={board.id}
-                    id={board.id}
-                    title={board.name}
-                    mode="dashboard"
-                    onEdit={(id, name) => updateBoard(id, name)}
-                    onArchive={(id) => archieveBoard(Number(id))}
-                    />
-                )
-            )}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {boards.map(
+                    (board) =>
+                    !board.is_archieved && (
+                        <Dashboard
+                        key={board.id}
+                        id={board.id}
+                        title={board.name}
+                        mode="dashboard"
+                        onEdit={(id, name) => updateBoard(id, name)}
+                        onArchive={(id) => archieveBoard(Number(id))}
+                        />
+                    )
+                )}
+                </div>
             </div>
-        </div>
         </div>
     );
 };

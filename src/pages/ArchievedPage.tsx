@@ -19,12 +19,12 @@ const ArchievedPage = () => {
                 <div className="grid grid-cols-3 gap-4">
                     {boards.map((board) => ( board.is_archieved && (
                             <Dashboard
-                            key={board.id}
-                            id={board.id}
-                            title={board.name}
-                            mode="archived"
-                            onArchive={(id) => archieveBoard(Number(id))}
-                            onDelete={(id) => deleteBoard(Number(id))}
+                                key={board.id}
+                                id={board.id}
+                                title={board.name}
+                                mode="archived"
+                                onArchive={(id) => archieveBoard(Number(id))}
+                                onDelete={(id) => deleteBoard(Number(id))}
                             />
                         )
                     ))}
