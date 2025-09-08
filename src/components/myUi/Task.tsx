@@ -48,7 +48,7 @@ const Task: React.FC<TaskProps> = ({ id, listId, name, description, priority, de
     const formatDate = (dateString: string) => {
         if (!dateString) return "";
         const d = new Date(dateString);
-        return d.toLocaleDateString("id-ID", {
+        return d.toLocaleDateString("en-US", {
             day: "2-digit",
             month: "long",
             year: "numeric",

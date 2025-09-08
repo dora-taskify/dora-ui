@@ -20,7 +20,7 @@ const LoginForm = () => {
         setShowSplash(true);
         setErrorMessage("")
         try {
-            await axiosInstance.post("/api/v1/login", {
+            const res = await axiosInstance.post("/api/v1/login", {
                 email,
                 password
             })

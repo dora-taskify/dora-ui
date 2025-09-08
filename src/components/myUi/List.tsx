@@ -7,7 +7,7 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,8 @@ type ListProps = {
     onArchive?: (id: number) => void;
     onDelete?: (id: number) => void;
     onAddTask?: (id: number) => void;
+    prio?: string;
+    sort?: "asc" | "desc"
 };
 
 const ListBoard: React.FC<ListProps> = ({
@@ -31,13 +33,19 @@ const ListBoard: React.FC<ListProps> = ({
     description,
     onEdit,
     onArchive,
+    prio,
+    sort
 }) => {
     const {id: boardId} = useParams()
-    const { handleCreateTask, taskName, setTaskName, setTaskDescription, taskDescription, tasks, handleDeleteTask, handleUpdateTask, priority, setPriority, deadline, setDeadline } = useTask(Number(boardId), id)
+    const { handleCreateTask, taskName, setTaskName, setTaskDescription, taskDescription, tasks, handleDeleteTask, handleUpdateTask, priority, setPriority, deadline, setDeadline, fetchTask } = useTask(Number(boardId), id)
     const [openDialog, setOpenDialog] = useState(false);
     const [editName, setEditName] = useState("");
     const [editDescription, setEditDescription] = useState("");
     const [showInput, setShowInput] = useState(false)
+
+    React.useEffect(() => {
+        fetchTask(prio, sort);
+    }, [prio, sort]);
 
     return (
         <div className="flex flex-col gap-2 w-64">
@@ -102,7 +110,7 @@ const ListBoard: React.FC<ListProps> = ({
             </Droppable>
             <div>
                 {showInput ? (
-                    <div className="bg-white rounded-xl border border-zinc-300 p-4">
+                    <div className="bg-white rounded-xl border border-zinc-300 p-4 w-60 ml-2">
                        <form
                             onSubmit={(e) => {
                             handleCreateTask(e);
