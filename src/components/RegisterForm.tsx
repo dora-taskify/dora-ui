@@ -98,7 +98,7 @@ const RegisterForm = () => {
                         />
                         {password && password.length < 6 && (
                             <p className="text-red-500 text-sm mt-1">
-                                Password must 6 or more alphabet
+                                Password must 6 or more characters
                             </p>
                         )}
                     </div>

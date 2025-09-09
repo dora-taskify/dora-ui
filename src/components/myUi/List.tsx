@@ -1,6 +1,6 @@
 import Task from "@/components/myUi/Task";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -25,6 +25,7 @@ type ListProps = {
     onAddTask?: (id: number) => void;
     prio?: string;
     sort?: "asc" | "desc"
+    refetchTrigger?: number;
 };
 
 const ListBoard: React.FC<ListProps> = ({
@@ -34,18 +35,19 @@ const ListBoard: React.FC<ListProps> = ({
     onEdit,
     onArchive,
     prio,
-    sort
+    sort,
+    refetchTrigger
 }) => {
     const { id: boardId } = useParams();
-    const { handleCreateTask, taskName, setTaskName, setTaskDescription, taskDescription, tasks, handleDeleteTask, handleUpdateTask, priority, setPriority, deadline, setDeadline, fetchTask } = useTask(Number(boardId), id);
+    const { handleCreateTask, taskName, setTaskName, setTaskDescription, taskDescription, tasks, handleDeleteTask, handleUpdateTask, priority, setPriority, deadline, setDeadline, fetchTask } = useTask(Number(boardId), id, refetchTrigger, prio, sort);
     const [openDialog, setOpenDialog] = useState(false);
     const [editName, setEditName] = useState("");
     const [editDescription, setEditDescription] = useState("");
     const [showInput, setShowInput] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         fetchTask(prio, sort);
-    }, [prio, sort]);
+    }, [prio, sort, refetchTrigger]);
 
     return (
         <div className="flex flex-col gap-2 w-72 rounded-xl bg-zinc-50 border border-zinc-200 shadow-sm">
@@ -88,7 +90,7 @@ const ListBoard: React.FC<ListProps> = ({
                         className="flex flex-col gap-2 min-h-[60px] px-3 py-2"
                     >
                         {tasks.length > 0 ? (
-                            tasks.map((task, index) => (
+                            tasks.map((task: any, index: number) => (
                                 <Draggable key={task.id} draggableId={String(task.id)} index={index}>
                                     {(provided) => (
                                         <div

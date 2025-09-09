@@ -1,14 +1,12 @@
 import axiosInstance from "@/utils/axios"
 import { useEffect, useState } from "react"
 
-const useTask = (board_id: number, list_id: number) => {
+const useTask = (board_id: number, list_id: number, refetchTrigger?: number, prio?: string, sort?: string) => {
     const [tasks, setTasks] = useState<any[]>([])
     const [taskName, setTaskName] = useState("")
     const [taskDescription, setTaskDescription] = useState("")
     const [priority, setPriority] = useState("LOW");
     const [deadline, setDeadline] = useState<Date | null>(null)
-    const [prio, setPrio] = useState<string>("")
-    const [sort, setSort] = useState<string>("")
 
     const handleCreateTask = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -21,7 +19,7 @@ const useTask = (board_id: number, list_id: number) => {
             })
             setTaskName("")
             setTaskDescription("")
-            fetchTask()
+            fetchTask(prio, sort)
         } catch (error) {
             console.log("reject");
         }
@@ -34,7 +32,7 @@ const useTask = (board_id: number, list_id: number) => {
             if (sortDeadline) query.append("sortDeadline", sortDeadline);
 
             const res = await axiosInstance.get(
-                `/api/v1/task/${board_id}/${list_id}?${query.toString()}`
+                `/api/v1/task/${board_id}/${list_id}?${query.toString()}&t=${Date.now()}`
             );
             setTasks(res.data.data);
         } catch (error) {
@@ -72,10 +70,16 @@ const useTask = (board_id: number, list_id: number) => {
     }
 
     useEffect(() => {
-        fetchTask()
-    }, [board_id, list_id])
+        fetchTask(prio, sort)
+    }, [board_id, list_id, prio, sort])
 
-    return { taskName, setTaskName, taskDescription, setTaskDescription, handleCreateTask, tasks, handleDeleteTask, setTasks, fetchTask, handleUpdateTask, priority, setPriority, deadline, setDeadline, prio, setPrio, sort, setSort }
+    useEffect(() => {
+        if (refetchTrigger !== undefined && refetchTrigger > 0) {
+            fetchTask(prio, sort)
+        }
+    }, [refetchTrigger])
+
+    return { taskName, setTaskName, taskDescription, setTaskDescription, handleCreateTask, tasks, handleDeleteTask, setTasks, fetchTask, handleUpdateTask, priority, setPriority, deadline, setDeadline }
 
 }
 
