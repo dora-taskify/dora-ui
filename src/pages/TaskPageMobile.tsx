@@ -7,6 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import HamburgerMenu from "@/components/myUi/HamburgerMenu";
+import {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuCheckboxItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import ArchivedList from "@/components/myUi/ArchievedList";
+import { ListFilter, Ellipsis } from "lucide-react";
 
 const TaskMobile = () => {
     const { id } = useParams();
@@ -20,18 +30,94 @@ const TaskMobile = () => {
         archieveList,
         updateList,
         handleDragTask,
+        handleDelete,
     } = useList(Number(id));
 
     const [showInput, setShowInput] = useState(false);
+    const [prio, setPrio] = useState<string | undefined>();
+    const [sort, setSort] = useState<"asc" | "desc" | undefined>();
 
     return (
-        <div className="flex h-screen w-full bg-white text-start mt-10">
+        <div className="flex h-screen w-full bg-white text-start">
             <HamburgerMenu />
 
-            <div className="flex-1 flex flex-col gap-4 pt-6 transition-all duration-300 overflow-auto px-4">
-                <div className="flex flex-col gap-4 pb-4 h-full">
+            <div className="flex-1 flex flex-col transition-all duration-300">
+                <div className="fixed top-0 left-0 right-0 z-20 flex items-center justify-between bg-stone-50 px-2 py-6 shadow-sm">
+                <h1 className="text-lg font-bold"></h1>
+
+                <div className="flex gap-4 items-center">
+                    <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <button className="flex items-center rounded hover:bg-zinc-100">
+                        <ListFilter size={20} />
+                        </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-44">
+                        <DropdownMenuLabel>Priority</DropdownMenuLabel>
+                        {["LOW", "MEDIUM", "HIGH", "CRITICAL"].map((level) => (
+                        <DropdownMenuCheckboxItem
+                            key={level}
+                            checked={prio === level}
+                            onCheckedChange={() =>
+                            setPrio(prio === level ? undefined : level)
+                            }
+                        >
+                            {level.charAt(0) + level.slice(1).toLowerCase()}
+                        </DropdownMenuCheckboxItem>
+                        ))}
+
+                        <DropdownMenuSeparator />
+                        <DropdownMenuLabel>Sort by Deadline</DropdownMenuLabel>
+                        <DropdownMenuCheckboxItem
+                        checked={sort === "asc"}
+                        onCheckedChange={() =>
+                            setSort(sort === "asc" ? undefined : "asc")
+                        }
+                        >
+                        Ascending
+                        </DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem
+                        checked={sort === "desc"}
+                        onCheckedChange={() =>
+                            setSort(sort === "desc" ? undefined : "desc")
+                        }
+                        >
+                        Descending
+                        </DropdownMenuCheckboxItem>
+                    </DropdownMenuContent>
+                    </DropdownMenu>
+
+                    <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <button className="flex items-center rounded hover:bg-zinc-100">
+                        <Ellipsis size={20} />
+                        </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-72 max-h-96 overflow-y-auto p-2">
+                        <DropdownMenuLabel>Archived List</DropdownMenuLabel>
+                        {lists.map(
+                        (list) =>
+                            list.is_archieved && (
+                            <div key={list.id} className="mb-2">
+                                <ArchivedList
+                                id={list.id}
+                                name={list.name}
+                                description={list.description}
+                                onRestore={(id) => archieveList(Number(id))}
+                                onDelete={(id) => handleDelete(Number(id))}
+                                />
+                            </div>
+                            )
+                        )}
+                    </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+                </div>
+
+                {/* Main content */}
+                <div className="flex-1 overflow-y-auto pt-[56px] px-2 mt-8">
                 <DragDropContext onDragEnd={handleDragTask}>
-                    <div className="flex gap-4 items-start flex-nowrap pb-4 h-full px-6">
+                    <div className="flex gap-4 pb-4">
                     {lists.map(
                         (list) =>
                         !list.is_archieved && (
@@ -44,22 +130,24 @@ const TaskMobile = () => {
                                 }
                                 id={list.id}
                                 onArchive={(id) => archieveList(Number(id))}
+                                prio={prio}
+                                sort={sort}
                             />
                             </div>
                         )
                     )}
 
-                    {/* form create list */}
-                    <div className="flex-shrink-0 w-64">
+                    {/* Add List */}
+                    <div className="flex-shrink-0 w-60 mt-12">
                         {showInput ? (
                         <form
                             onSubmit={(e) => {
                             handleCreateList(e);
                             setShowInput(false);
                             }}
-                            className="mt-16"
+                            className="mt-4"
                         >
-                            <div className="bg-white rounded-xl flex flex-col gap-2 w-full">
+                            <div className="bg-white rounded-xl flex flex-col gap-2 p-3 shadow">
                             <Input
                                 placeholder="List Name"
                                 value={name}
@@ -89,7 +177,7 @@ const TaskMobile = () => {
                         </form>
                         ) : (
                         <Button
-                            className="cursor-pointer hover:bg-secondary-shade w-full h-14 rounded-lg bg-white border border-zinc-300 mt-16"
+                            className="cursor-pointer hover:bg-secondary-shade w-full h-12 rounded-lg bg-white border border-zinc-300 mt-4"
                             onClick={() => setShowInput(true)}
                         >
                             + Add List

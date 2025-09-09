@@ -33,7 +33,7 @@ const useList = (id: number) => {
 
     const updateList = async (listId: number, name: string, description: string) => {
         try {
-            await axiosInstance.put(`api/v1/list/${id}/${listId}/`, {
+            await axiosInstance.put(`/api/v1/list/${id}/${listId}/`, {
                 name,
                 description
             })
@@ -47,7 +47,6 @@ const useList = (id: number) => {
         try {
             await axiosInstance.patch(`/api/v1/list/${id}/${listId}`)
             await fetchList()
-            console.log("sukses isi dua");
             
         } catch (error) {
             console.error("Failed to archieve", error);
@@ -77,11 +76,22 @@ const useList = (id: number) => {
         }
     };
 
+    const handleDelete = async (listId: number) => {
+        console.log("ini kenapa");
+        await axiosInstance.delete(`/api/v1/list/${id}/${listId}`)
+        fetchList()
+        
+        try {
+        } catch (error) {
+            console.error("Gagal delete list:", error);
+        }
+    }
+
     useEffect(() => {
         fetchList()
     },[])
 
-    return { lists, setLists, name, setName, handleCreateList, description, setDescription, archieveList, updateList, fetchList, handleDragTask }
+    return { lists, setLists, name, setName, handleCreateList, description, setDescription, archieveList, updateList, fetchList, handleDragTask, handleDelete }
 }
 
 export default useList

@@ -7,6 +7,8 @@ const useTask = (board_id: number, list_id: number) => {
     const [taskDescription, setTaskDescription] = useState("")
     const [priority, setPriority] = useState("LOW");
     const [deadline, setDeadline] = useState<Date | null>(null)
+    const [prio, setPrio] = useState<string>("")
+    const [sort, setSort] = useState<string>("")
 
     const handleCreateTask = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -25,15 +27,20 @@ const useTask = (board_id: number, list_id: number) => {
         }
     }
 
-    const fetchTask = async () => {
+    const fetchTask = async (prioFilter?: string, sortDeadline?: string) => {
         try {
-            const res = await axiosInstance.get(`/api/v1/task/${board_id}/${list_id}`)
-            setTasks(res.data.data)
+            const query = new URLSearchParams();
+            if (prioFilter) query.append("prio", prioFilter);
+            if (sortDeadline) query.append("sortDeadline", sortDeadline);
+
+            const res = await axiosInstance.get(
+                `/api/v1/task/${board_id}/${list_id}?${query.toString()}`
+            );
+            setTasks(res.data.data);
         } catch (error) {
-            console.error("Failed to fetch boards:", error);
+            console.error("Failed to fetch tasks:", error);
         }
-    }
-    
+    };
 
     const handleDeleteTask = async (taskId: number) => {
         try {
@@ -68,7 +75,7 @@ const useTask = (board_id: number, list_id: number) => {
         fetchTask()
     }, [board_id, list_id])
 
-    return { taskName, setTaskName, taskDescription, setTaskDescription, handleCreateTask, tasks, handleDeleteTask, setTasks, fetchTask, handleUpdateTask, priority, setPriority, deadline, setDeadline }
+    return { taskName, setTaskName, taskDescription, setTaskDescription, handleCreateTask, tasks, handleDeleteTask, setTasks, fetchTask, handleUpdateTask, priority, setPriority, deadline, setDeadline, prio, setPrio, sort, setSort }
 
 }
 
