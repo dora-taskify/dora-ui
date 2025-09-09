@@ -4,14 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useBoard from "@/hooks/useBoard";
 import { DialogClose } from "@radix-ui/react-dialog";
-import HamburgerMenu from "@/components/myUi/HamburgerMenu";
+import BottomMenu from "@/components/myUi/BottomMenu";
 
 const DashboardMobile = () => {
     const { name, setName, handleSubmit, boards, archieveBoard, updateBoard } = useBoard();
 
     return (
-        <div className="flex h-screen w-full bg-white text-start">
-            <HamburgerMenu />
+        <div className="flex h-screen w-full bg-white text-start bg-app">
+            <BottomMenu />
 
             <div className="flex-1 flex flex-col gap-4 pt-6 mt-10 transition-all duration-300 px-4 overflow-auto">
                 <div className="flex gap-2 items-center justify-between min-w-[280px]">

@@ -12,7 +12,7 @@ const DashboardPage = () => {
     const [open, setOpen] = useState(true);
 
     return (
-        <div className="flex h-screen w-full bg-white text-start px-8">
+        <div className="flex h-screen w-full bg-white text-start px-8 bg-app">
             <Sidebar open={open} setOpen={setOpen} />
 
             <div

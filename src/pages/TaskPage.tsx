@@ -16,7 +16,8 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import ArchivedList from "@/components/myUi/ArchievedList";
-import { ListFilter, Ellipsis } from "lucide-react";
+import { ListFilter, Ellipsis, Bell } from "lucide-react";
+import Notification from "@/components/myUi/Notification";
 
 const TaskPage = () => {
     const { id } = useParams();
@@ -28,7 +29,7 @@ const TaskPage = () => {
     const [sort, setSort] = useState<"asc" | "desc" | undefined>();
 
   return (
-    <div className="flex h-screen w-full bg-white text-start">
+    <div className="flex h-screen w-full bg-white text-start bg-app">
       <Sidebar open={open} setOpen={setOpen} />
 
       <div
@@ -37,7 +38,7 @@ const TaskPage = () => {
         }`}
       >
         <div 
-            className="fixed top-0 left-0 right-0 z-20 flex items-center justify-between bg-stone-50 px-7 py-2 shadow-sm ml-[70px] transition-all duration-300"
+            className="fixed top-0 left-0 right-0 z-20 flex items-center justify-between bg-stone-50 px-7 py-4 shadow-sm ml-[70px] transition-all duration-300"
             style={{ marginLeft: open ? "280px" : "69px" }}>
           <h1 className="text-xl font-bold">Tasks</h1>
 
@@ -124,18 +125,30 @@ const TaskPage = () => {
               </DropdownMenuContent>
               </DropdownMenu>
             </div>
-          </div>
 
+            <div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center rounded hover:bg-zinc-100">
+                    <Bell size={20}/>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-72 max-h-96 overflow-y-auto p-2">
+                  <Notification profileId={1} />
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto pt-[64px]">
+        <div className="flex-1 overflow-y-auto pt-[64px] mt-2">
           <div className="flex items-start flex-nowrap pb-4 h-full">
             <DragDropContext onDragEnd={handleDragTask}>
-              <div className="flex gap-4 items-start flex-nowrap pb-4 h-full px-6">
+              <div className="flex gap-8 items-start flex-nowrap pb-4 h-full mr-2">
                 {lists.map(
                   (list) =>
                     !list.is_archieved && (
-                      <div key={list.id} className="flex-shrink-0 w-64">
+                      <div key={list.id} className="flex gap-2 w-64">
                         <List
                           name={list.name}
                           description={list.description}
@@ -153,7 +166,6 @@ const TaskPage = () => {
               </div>
             </DragDropContext>
 
-            {/* Add List */}
             <div>
               {showInput ? (
                 <form
@@ -161,6 +173,7 @@ const TaskPage = () => {
                     handleCreateList(e);
                     setShowInput(false);
                   }}
+                  className="ml-4"
                 >
                   <div className="bg-white rounded-xl flex flex-col gap-2 mt-16 w-65">
                     <div className="flex flex-col gap-2">
@@ -193,7 +206,7 @@ const TaskPage = () => {
                 </form>
               ) : (
                 <Button
-                  className="cursor-pointer hover:bg-secondary-shade w-full h-14 mt-16 rounded-lg w-64 bg-white border border-zinc-300"
+                  className="cursor-pointer hover:bg-secondary-shade w-full h-14 rounded-lg w-64 bg-white border border-zinc-300 ml-4"
                   onClick={() => setShowInput(true)}
                 >
                   + Add List

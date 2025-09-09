@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 type BoardProps = {
     id: string
     title: string
-    mode?: "dashboard" | "archived"; // beda mode
+    mode?: "dashboard" | "archived";
     onEdit?: (id: number, name: string) => void;
     onArchive?: (id: number) => void;
     onDelete?: (id: number) => void;
@@ -37,7 +37,7 @@ const Board: React.FC<BoardProps> = ({
             className="cursor-pointer bg-white rounded-xl border border-zinc-300 overflow-hidden mb-10 hover:shadow-sm"
         >
             <div className="h-22 w-full overflow-hidden bg-zinc-200">
-                <img src="/Infinite_tsukuyomi.jpg" alt="header" />
+                <img src="/wallpaper.jpg" alt="header" />
             </div>
 
             <div className="p-4 flex justify-between">

@@ -1,4 +1,4 @@
-import HamburgerMenu from "@/components/myUi/HamburgerMenu";
+import HamburgerMenu from "@/components/myUi/BottomMenu";
 import Dashboard from "@/components/myUi/Board";
 import useBoard from "@/hooks/useBoard";
 
@@ -7,7 +7,7 @@ const ArchievedMobile = () => {
 
 
     return (
-        <div className="flex h-screen w-full bg-white text-start">
+        <div className="flex h-screen w-full bg-white text-start bg-app">
             <HamburgerMenu />
 
             <div className="flex-1 flex flex-col gap-4 pt-6 mt-10 transition-all duration-300 px-4 overflow-auto">

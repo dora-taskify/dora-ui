@@ -26,7 +26,7 @@
   --secondary-shade: oklch(75% 0.10 250);
 
   --foreground: oklch(0% 0 0);
-  --background: oklch(1 0 0);
+  --background: oklch(98.554% 0.00621 317.003);
 }
 
 .dark {
@@ -36,13 +36,21 @@
   --secondary: oklch(50% 0.15 250);
   --secondary-shade: oklch(65% 0.12 250);
 
-  --foreground: oklch(0.985 0 0);
+  --foreground: oklch(94.474% 0.00646 16.357);
   --background: oklch(0.145 0 0);
+}
+
+body { 
+  background-color: var(--background) 
 }
 
 @layer utilities {
   .text-primary {
     color: var(--primary);
+  }
+
+  .bg-app {
+    background-color: var(--background);
   }
 
   .text-white {
