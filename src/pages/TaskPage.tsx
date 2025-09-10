@@ -21,12 +21,13 @@ import Notification from "@/components/myUi/Notification";
 
 const TaskPage = () => {
     const { id } = useParams();
-    const { lists, name, setName, handleCreateList, description, setDescription, archieveList, updateList, handleDragTask, handleDelete, refetchTrigger } = useList(Number(id));
     const [open, setOpen] = useState(true);
     const [showInput, setShowInput] = useState(false);
 
     const [prio, setPrio] = useState<string | undefined>();
     const [sort, setSort] = useState<"asc" | "desc" | undefined>();
+
+    const { lists, tasks, updateTasks, name, setName, handleCreateList, description, setDescription, archieveList, updateList, handleDragTask, handleDelete } = useList(Number(id), prio, sort);
 
   return (
     <div className="flex h-screen w-full bg-white text-start bg-app px-3">
@@ -152,6 +153,8 @@ const TaskPage = () => {
                         <List
                           name={list.name}
                           description={list.description}
+                          tasks={tasks[list.id] || []}
+                          updateTasks={updateTasks}
                           onEdit={(id, name, description) =>
                             updateList(id, name, description)
                           }
@@ -159,7 +162,6 @@ const TaskPage = () => {
                           onArchive={(id) => archieveList(Number(id))}
                           prio={prio}
                           sort={sort}
-                          refetchTrigger={refetchTrigger}
                         />
                       </div>
                     )

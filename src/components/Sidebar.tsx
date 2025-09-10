@@ -1,3 +1,4 @@
+import axiosInstance from "@/utils/axios";
 import { isMobileDevice } from "@/utils/detectDevice";
 import { Menu, Home, ArchiveRestore, LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -18,7 +19,15 @@ const Sidebar = ({open, setOpen}: SidebarProps) => {
 
     const [isMobile, setIsMobile] = useState(false)
 
-
+    const handleLogout = async () => {
+        try {
+            await axiosInstance.post("/api/v1/logout")
+            localStorage.removeItem("email")
+            navigate("/login")
+        } catch (error) {
+            console.log(error)
+        }
+    }
     useEffect(() => {
         setIsMobile(isMobileDevice())
     }, []);
@@ -71,7 +80,7 @@ const Sidebar = ({open, setOpen}: SidebarProps) => {
                             {open && <span className="text-sm">{menu.label}</span>}
                         </Link>
                     ))}
-                    <div className="flex mt-92 p-2 gap-2 font-bold text-sm hover:bg-zinc-200 rounded-sm items-center" onClick={() => navigate("/login")}>
+                    <div className="flex mt-92 p-2 gap-2 font-bold text-sm hover:bg-zinc-200 rounded-sm items-center" onClick={handleLogout}>
                         <LogOut width={18}/>
                         <p>Logout</p>
                     </div>

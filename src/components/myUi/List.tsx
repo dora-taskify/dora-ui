@@ -1,6 +1,6 @@
 import Task from "@/components/myUi/Task";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -19,35 +19,59 @@ type ListProps = {
     id: number;
     name: string;
     description: string;
+    tasks: any[];
+    updateTasks: (listId: number, newTasks: any[]) => void;
     onEdit?: (id: number, name: string, description: string) => void;
     onArchive?: (id: number) => void;
     onDelete?: (id: number) => void;
     onAddTask?: (id: number) => void;
     prio?: string;
     sort?: "asc" | "desc"
-    refetchTrigger?: number;
 };
 
 const ListBoard: React.FC<ListProps> = ({
     id,
     name,
     description,
+    tasks,
+    updateTasks,
     onEdit,
     onArchive,
     prio,
-    sort,
-    refetchTrigger
+    sort
 }) => {
     const { id: boardId } = useParams();
-    const { handleCreateTask, taskName, setTaskName, setTaskDescription, taskDescription, tasks, handleDeleteTask, handleUpdateTask, priority, setPriority, deadline, setDeadline, fetchTask } = useTask(Number(boardId), id, refetchTrigger, prio, sort);
+    const { handleCreateTask, taskName, setTaskName, setTaskDescription, taskDescription, handleDeleteTask, handleUpdateTask, priority, setPriority, deadline, setDeadline } = useTask(Number(boardId), id, tasks, updateTasks);
     const [openDialog, setOpenDialog] = useState(false);
     const [editName, setEditName] = useState("");
     const [editDescription, setEditDescription] = useState("");
     const [showInput, setShowInput] = useState(false);
 
-    useEffect(() => {
-        fetchTask(prio, sort);
-    }, [prio, sort, refetchTrigger]);
+    // Filter and sort tasks
+    const filteredAndSortedTasks = React.useMemo(() => {
+        let filtered = tasks;
+
+        // Filter by priority
+        if (prio) {
+            filtered = filtered.filter(task => task.priority === prio);
+        }
+
+        // Sort by deadline
+        if (sort) {
+            filtered = [...filtered].sort((a, b) => {
+                const aDate = a.deadline ? new Date(a.deadline).getTime() : Infinity;
+                const bDate = b.deadline ? new Date(b.deadline).getTime() : Infinity;
+
+                if (sort === "asc") {
+                    return aDate - bDate;
+                } else {
+                    return bDate - aDate;
+                }
+            });
+        }
+
+        return filtered;
+    }, [tasks, prio, sort]);
 
     return (
         <div className="flex flex-col gap-2 w-72 rounded-xl bg-zinc-50 border border-zinc-200 shadow-sm">
@@ -89,8 +113,8 @@ const ListBoard: React.FC<ListProps> = ({
                         {...provided.droppableProps}
                         className="flex flex-col gap-2 min-h-[60px] px-3 py-2"
                     >
-                        {tasks.length > 0 ? (
-                            tasks.map((task: any, index: number) => (
+                        {filteredAndSortedTasks.length > 0 ? (
+                            filteredAndSortedTasks.map((task: any, index: number) => (
                                 <Draggable key={task.id} draggableId={String(task.id)} index={index}>
                                     {(provided) => (
                                         <div
